@@ -62,7 +62,7 @@
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900 custom-scrollbar min-h-screen">
 
-    <!-- Firestore Rules Help Modal -->
+    <!-- Rules Modal -->
     <div id="rules-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 border border-slate-200 text-center">
             <div class="flex items-center justify-center gap-3 mb-4 text-amber-600">
@@ -70,11 +70,10 @@
             </div>
             <h2 class="text-xl font-bold text-slate-900 mb-2">Access Denied</h2>
             <p class="text-slate-600 mb-6 text-sm leading-relaxed">
-                Your Firebase Project's <strong>Firestore Security Rules</strong> are blocking this app. 
-                Please ensure your rules allow read/write access to the paths being used.
+                Database permission error. Please ensure your Firebase Firestore and Storage rules are configured to allow uploads.
             </p>
             <button onclick="window.location.reload()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2">
-                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Retry Connection
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Retry
             </button>
         </div>
     </div>
@@ -107,7 +106,7 @@
                 <i data-lucide="upload" class="w-12 h-12" stroke-width="2.5"></i>
             </div>
             <h1 class="text-4xl font-black text-slate-900 mb-3 tracking-tight">Cloud Bin</h1>
-            <p class="text-slate-500 mb-10 leading-relaxed font-medium text-sm">Enter your workspace email to identify your contributions and access the repository.</p>
+            <p class="text-slate-500 mb-10 leading-relaxed font-medium text-sm">Enter your email to access the repository. Support for PDFs up to 200MB.</p>
             
             <form id="login-form" class="space-y-4 text-left">
                 <div class="relative group">
@@ -132,7 +131,6 @@
 
     <!-- Main App Screen -->
     <div id="app-screen" class="hidden">
-        <!-- Header -->
         <header class="glass-header border-b sticky top-0 z-20">
             <div class="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
                 <div class="flex items-center gap-3">
@@ -167,60 +165,32 @@
                 </button>
             </div>
 
-            <!-- Text Feed Section -->
+            <!-- Text Section -->
             <div id="section-text" class="space-y-6">
-                <!-- AI Summary -->
-                <div id="summary-container" class="hidden bg-gradient-to-br from-indigo-50 to-blue-50 p-6 rounded-[2rem] border border-blue-100 relative">
-                    <div class="flex items-start gap-4">
-                         <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-indigo-600 shadow-sm shrink-0">
-                            <i data-lucide="sparkles" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wide mb-1 leading-none">AI Insight Summary</h3>
-                            <p id="summary-text" class="text-slate-600 text-sm leading-relaxed"></p>
-                        </div>
-                    </div>
-                    <button id="close-summary-btn" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600">
-                        <i data-lucide="x" class="w-4 h-4"></i>
-                    </button>
-                </div>
-
-                <!-- Post Form -->
                 <form id="msg-form" class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200 relative group">
-                    <textarea id="msg-input" placeholder="Share an update..."
-                        class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-5 focus:bg-white focus:border-blue-500/20 outline-none resize-none h-32 text-slate-700 font-medium text-lg transition-all"></textarea>
+                    <textarea id="msg-input" placeholder="Share an update..." class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-5 focus:bg-white focus:border-blue-500/20 outline-none resize-none h-32 text-slate-700 font-medium text-lg transition-all"></textarea>
                     <div class="mt-4 flex justify-between items-center">
-                        <button type="button" id="magic-polish-btn" class="text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 px-4 py-2 rounded-xl transition-all flex items-center gap-2 text-sm font-bold group/ai" title="Enhance with Gemini">
-                            <i data-lucide="sparkles" class="w-4 h-4"></i> 
-                            <span class="group-hover/ai:text-gradient-ai">Magic Polish</span>
+                        <button type="button" id="magic-polish-btn" class="text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 px-4 py-2 rounded-xl transition-all flex items-center gap-2 text-sm font-bold group/ai">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i> <span class="group-hover/ai:text-gradient-ai">Magic Polish</span>
                         </button>
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-2xl font-black flex items-center gap-2 shadow-lg shadow-blue-100 transform active:scale-95 transition-all">
                             Post <i data-lucide="send" class="w-4.5 h-4.5"></i>
                         </button>
                     </div>
                 </form>
-
-                <div class="flex justify-between items-center px-2">
-                     <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Live Stream</h3>
-                     <button id="summarize-btn" class="text-[10px] font-bold bg-white border border-slate-200 text-slate-500 hover:text-indigo-600 hover:border-indigo-200 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all shadow-sm">
-                        <i data-lucide="sparkles" class="w-3 h-3"></i> Summarize Recent
-                     </button>
-                </div>
-
                 <div id="messages-list" class="space-y-4"></div>
             </div>
 
-            <!-- Uploads Section -->
+            <!-- Files Section -->
             <div id="section-files" class="hidden space-y-8">
-                <!-- Drag and Drop Zone -->
-                <div id="dropzone" class="bg-white p-10 rounded-[2.5rem] shadow-sm border-2 border-dashed border-slate-200 transition-all">
-                    <div id="dropzone-empty" class="text-center cursor-pointer">
-                        <div class="w-20 h-20 bg-blue-50 rounded-3xl flex items-center justify-center text-blue-600 mx-auto mb-6 border border-blue-100 transition-transform hover:scale-110">
+                <div id="dropzone" class="bg-white p-10 rounded-[2.5rem] shadow-sm border-2 border-dashed border-slate-200 transition-all text-center cursor-pointer">
+                    <div id="dropzone-empty">
+                        <div class="w-20 h-20 bg-blue-50 rounded-3xl flex items-center justify-center text-blue-600 mx-auto mb-6 border border-blue-100">
                             <i data-lucide="upload" class="w-10 h-10"></i>
                         </div>
-                        <h3 class="text-2xl font-black text-slate-900 mb-2">Select from Device</h3>
-                        <p class="text-slate-400 font-bold uppercase tracking-widest text-[11px]">Drag and drop your files or click to browse</p>
-                        <input type="file" id="file-input" class="hidden">
+                        <h3 class="text-2xl font-black text-slate-900 mb-2">Select Device File</h3>
+                        <p class="text-slate-400 font-bold uppercase tracking-widest text-[11px]">Supports PDF up to 200MB</p>
+                        <input type="file" id="file-input" class="hidden" accept=".pdf,image/*,.docx,.txt">
                     </div>
 
                     <div id="dropzone-selected" class="hidden bg-slate-50 p-6 rounded-2xl border border-slate-200">
@@ -229,46 +199,49 @@
                                 <div class="w-14 h-14 bg-white rounded-xl flex items-center justify-center text-blue-600 shadow-md">
                                     <i data-lucide="file-text" class="w-8 h-8"></i>
                                 </div>
-                                <div>
-                                    <h4 id="selected-file-name" class="font-black text-slate-900 text-lg">filename.ext</h4>
+                                <div class="text-left">
+                                    <h4 id="selected-file-name" class="font-black text-slate-900 text-lg truncate max-w-[200px]">filename.ext</h4>
                                     <p id="selected-file-size" class="text-sm font-bold text-slate-400">0 KB</p>
                                 </div>
                             </div>
-                            <button id="clear-file-btn" class="p-3 hover:bg-red-50 text-slate-400 hover:text-red-500 rounded-xl transition-colors">
+                            <button id="clear-file-btn" class="p-3 hover:bg-red-50 text-slate-400 hover:text-red-500 rounded-xl">
                                 <i data-lucide="x" class="w-6 h-6"></i>
                             </button>
                         </div>
+                        
+                        <!-- Progress Bar -->
+                        <div id="upload-progress-container" class="hidden mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="text-xs font-black text-blue-600 uppercase tracking-widest">Uploading...</span>
+                                <span id="upload-percent" class="text-xs font-black text-blue-600">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                                <div id="upload-progress-bar" class="bg-blue-600 h-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+
                         <button id="upload-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-black flex items-center justify-center gap-3 transition-all shadow-xl shadow-blue-200 active:scale-95">
-                             <i data-lucide="upload" class="w-5 h-5"></i> Push to Workspace Cloud
+                             <i data-lucide="upload-cloud" class="w-5 h-5"></i> Start Cloud Upload
                         </button>
                     </div>
                 </div>
 
                 <div class="grid gap-4">
-                    <div class="flex items-center justify-between px-4">
-                        <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.3em]">Cloud Assets</h3>
-                    </div>
+                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.3em] px-4">Workspace Assets</h3>
                     <div id="files-list" class="space-y-3"></div>
                 </div>
             </div>
         </main>
-        
-        <footer class="py-20 text-center opacity-30">
-            <p class="font-black uppercase tracking-[0.6em] text-[10px] text-slate-400 mb-2">Cloud Bin Workspace</p>
-            <div class="flex items-center justify-center gap-2 text-[10px] font-bold text-slate-400 uppercase">
-                <i data-lucide="shield-check" class="w-3 h-3 text-green-500"></i> Secure Connection Established
-            </div>
-        </footer>
     </div>
 
-    <!-- Application Modules -->
+    <!-- Modules -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, deleteDoc, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
-        // Firebase Configuration (Project: jalal-clound-bin)
+        // Firebase Config (jalal-clound-bin)
         const firebaseConfig = {
             apiKey: "AIzaSyAkSoYQEmr-fX9d2bNH_gguivN9muvTztA",
             authDomain: "jalal-clound-bin.firebaseapp.com",
@@ -280,282 +253,183 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const storage = getStorage(app);
         const appId = "jalal-clound-bin";
 
-        // Global App State
+        // Global State
         let currentUser = null;
         let sessionEmail = '';
-        let currentMessagesData = [];
         let selectedFile = null;
 
-        // DOM Binding
+        // UI Binding
         const screens = {
             loading: document.getElementById('loading-screen'),
             auth: document.getElementById('auth-screen'),
             app: document.getElementById('app-screen'),
             rules: document.getElementById('rules-modal')
         };
-        const loginForm = document.getElementById('login-form');
-        const emailInput = document.getElementById('email-input');
-        const headerEmail = document.getElementById('header-email');
-        const logoutBtn = document.getElementById('logout-btn');
-        const errorToast = document.getElementById('error-toast');
-        const errorMessage = document.getElementById('error-message');
-
+        
         lucide.createIcons();
 
         function showError(msg) {
-            errorMessage.textContent = msg;
-            errorToast.classList.remove('hidden');
+            document.getElementById('error-message').textContent = msg;
+            document.getElementById('error-toast').classList.remove('hidden');
             screens.loading.classList.add('hidden');
         }
 
-        // Authentication & Session Persistence
+        // Auth
         onAuthStateChanged(auth, async (user) => {
             currentUser = user;
             if (user) {
                 try {
-                    // Fetch persisted session from user settings
                     const profileRef = doc(db, 'artifacts', appId, 'users', user.uid, 'settings', 'profile');
                     const profileDoc = await getDoc(profileRef);
-                    
                     if (profileDoc.exists()) {
                         sessionEmail = profileDoc.data().email;
-                        headerEmail.textContent = sessionEmail;
+                        document.getElementById('header-email').textContent = sessionEmail;
                         showApp();
                     } else {
-                        showAuthScreen();
+                        showAuth();
                     }
                 } catch (err) {
-                    console.error("Session Error:", err);
-                    if (err.code === 'permission-denied') {
-                        screens.rules.classList.remove('hidden');
-                        screens.loading.classList.add('hidden');
-                    } else {
-                        showAuthScreen();
-                    }
+                    if (err.code === 'permission-denied') screens.rules.classList.remove('hidden');
+                    showAuth();
                 }
             } else {
-                signInAnonymously(auth).catch(err => {
-                    console.error("Auth Failure:", err);
-                    showError("Firebase Connection Failed. Enable Anonymous Auth.");
-                });
+                signInAnonymously(auth).catch(() => showError("Firebase Error. Check Configuration."));
             }
         });
-
-        function showAuthScreen() {
-            screens.loading.classList.add('hidden');
-            screens.app.classList.add('hidden');
-            screens.auth.classList.remove('hidden');
-        }
 
         function showApp() {
             screens.loading.classList.add('hidden');
             screens.auth.classList.add('hidden');
             screens.app.classList.remove('hidden');
-            setupDataStreams();
+            setupStreams();
         }
 
-        // Login Logic
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = emailInput.value.trim();
-            if (!email || !email.includes('@')) return;
+        function showAuth() {
+            screens.loading.classList.add('hidden');
+            screens.auth.classList.remove('hidden');
+        }
 
+        // Login
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email-input').value.trim();
+            if (!email.includes('@')) return;
             screens.loading.classList.remove('hidden');
             try {
                 const profileRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'profile');
                 await setDoc(profileRef, { email, lastLogin: serverTimestamp() });
                 sessionEmail = email;
-                headerEmail.textContent = sessionEmail;
+                document.getElementById('header-email').textContent = sessionEmail;
                 showApp();
-            } catch (err) {
-                console.error("Login Error:", err);
-                showError("Permission Denied: Ensure Firestore rules are set.");
-            }
+            } catch { showError("Login Permission Error."); }
         });
 
-        // Logout Logic
-        logoutBtn.addEventListener('click', async () => {
-            screens.loading.classList.remove('hidden');
-            try {
-                const profileRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'profile');
-                await deleteDoc(profileRef);
-                window.location.reload();
-            } catch (err) {
-                showError("Logout Error: " + err.message);
-            }
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            const profileRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'profile');
+            await deleteDoc(profileRef);
+            window.location.reload();
         });
 
-        // UI Tabs Switch
+        // Tabs
         const tabs = {
-            text: { btn: document.getElementById('tab-text'), section: document.getElementById('section-text') },
-            files: { btn: document.getElementById('tab-files'), section: document.getElementById('section-files') }
+            text: document.getElementById('tab-text'),
+            files: document.getElementById('tab-files')
         };
-
         function setTab(key) {
-            Object.keys(tabs).forEach(t => {
-                const isActive = t === key;
-                tabs[t].section.classList.toggle('hidden', !isActive);
-                tabs[t].btn.classList.toggle('bg-blue-600', isActive);
-                tabs[t].btn.classList.toggle('text-white', isActive);
-                tabs[t].btn.classList.toggle('shadow-lg', isActive);
-                tabs[t].btn.classList.toggle('font-bold', isActive);
-                tabs[t].btn.classList.toggle('text-slate-400', !isActive);
-                tabs[t].btn.classList.toggle('font-semibold', !isActive);
-            });
+            document.getElementById('section-text').classList.toggle('hidden', key !== 'text');
+            document.getElementById('section-files').classList.toggle('hidden', key !== 'files');
+            tabs.text.className = `flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl tab-transition ${key === 'text' ? 'bg-blue-600 text-white shadow-lg font-bold' : 'text-slate-400 font-semibold hover:bg-slate-50'}`;
+            tabs.files.className = `flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl tab-transition ${key === 'files' ? 'bg-blue-600 text-white shadow-lg font-bold' : 'text-slate-400 font-semibold hover:bg-slate-50'}`;
         }
-        tabs.text.btn.addEventListener('click', () => setTab('text'));
-        tabs.files.btn.addEventListener('click', () => setTab('files'));
+        tabs.text.addEventListener('click', () => setTab('text'));
+        tabs.files.addEventListener('click', () => setTab('files'));
 
-        // Gemini AI Functions
-        const magicPolishBtn = document.getElementById('magic-polish-btn');
-        const summarizeBtn = document.getElementById('summarize-btn');
-        const summaryBox = document.getElementById('summary-container');
-        const summaryText = document.getElementById('summary-text');
-
-        async function callGemini(prompt) {
-            const apiKey = ""; // Runtime Injection
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
-                const data = await response.json();
-                return data.candidates[0].content.parts[0].text;
-            } catch (err) {
-                console.error("AI Error:", err);
-                return null;
-            }
-        }
-
-        magicPolishBtn.addEventListener('click', async () => {
-            const msgInput = document.getElementById('msg-input');
-            const txt = msgInput.value.trim();
-            if (!txt) return;
-
-            magicPolishBtn.disabled = true;
-            magicPolishBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Refining...`;
-            lucide.createIcons();
-
-            const prompt = `Rewrite this workplace update to be professional, engaging, and clear: "${txt}". Only return the rewritten text.`;
-            const result = await callGemini(prompt);
-            if (result) msgInput.value = result.trim();
-
-            magicPolishBtn.disabled = false;
-            magicPolishBtn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i> Magic Polish`;
-            lucide.createIcons();
-        });
-
-        summarizeBtn.addEventListener('click', async () => {
-            if (currentMessagesData.length === 0) return;
-            summarizeBtn.disabled = true;
-            
-            const chatLog = currentMessagesData.slice(0, 10).map(m => `${m.userName}: ${m.text}`).join('\n');
-            const prompt = `Summarize the key points of this team chat in 2 sentences:\n${chatLog}`;
-            const summary = await callGemini(prompt);
-            
-            if (summary) {
-                summaryText.textContent = summary;
-                summaryBox.classList.remove('hidden');
-            }
-            summarizeBtn.disabled = false;
-        });
-
-        document.getElementById('close-summary-btn').addEventListener('click', () => summaryBox.classList.add('hidden'));
-
-        // Feed Logic
-        const msgForm = document.getElementById('msg-form');
-        msgForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const input = document.getElementById('msg-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'messages'), {
-                    text,
-                    userName: sessionEmail,
-                    userId: currentUser.uid,
-                    timestamp: serverTimestamp()
-                });
-                input.value = '';
-            } catch (err) { showError("DB Error: " + err.message); }
-        });
-
-        // File Logic
-        const dropzone = document.getElementById('dropzone');
+        // File Selection Logic
         const fileInput = document.getElementById('file-input');
-        const dropEmpty = document.getElementById('dropzone-empty');
-        const dropSelected = document.getElementById('dropzone-selected');
+        const dropzone = document.getElementById('dropzone');
+        dropzone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => { if (e.target.files.length) handleFile(e.target.files[0]); });
 
-        dropEmpty.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => { if (e.target.files.length) handleFileSelect(e.target.files[0]); });
-
-        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-blue-500', 'bg-blue-50/30'); });
-        dropzone.addEventListener('dragleave', () => { dropzone.classList.remove('border-blue-500', 'bg-blue-50/30'); });
-        dropzone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropzone.classList.remove('border-blue-500', 'bg-blue-50/30');
-            if (e.dataTransfer.files.length) handleFileSelect(e.dataTransfer.files[0]);
-        });
-
-        function handleFileSelect(file) {
+        function handleFile(file) {
+            if (file.size > 200 * 1024 * 1024) {
+                showError("File too large. Maximum size is 200MB.");
+                return;
+            }
             selectedFile = file;
             document.getElementById('selected-file-name').textContent = file.name;
-            document.getElementById('selected-file-size').textContent = (file.size / 1024).toFixed(1) + ' KB';
-            dropEmpty.classList.add('hidden');
-            dropSelected.classList.remove('hidden');
+            document.getElementById('selected-file-size').textContent = (file.size / (1024 * 1024)).toFixed(2) + " MB";
+            document.getElementById('dropzone-empty').classList.add('hidden');
+            document.getElementById('dropzone-selected').classList.remove('hidden');
         }
 
-        document.getElementById('clear-file-btn').addEventListener('click', () => {
+        document.getElementById('clear-file-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
             selectedFile = null;
-            dropSelected.classList.add('hidden');
-            dropEmpty.classList.remove('hidden');
+            document.getElementById('dropzone-selected').classList.add('hidden');
+            document.getElementById('dropzone-empty').classList.remove('hidden');
         });
 
-        document.getElementById('upload-btn').addEventListener('click', async () => {
+        // --- REAL FILE UPLOAD LOGIC ---
+        document.getElementById('upload-btn').addEventListener('click', async (e) => {
+            e.stopPropagation();
             if (!selectedFile) return;
-            const btn = document.getElementById('upload-btn');
-            btn.disabled = true;
-            btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Processing...`;
-            lucide.createIcons();
 
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'files'), {
-                    name: selectedFile.name,
-                    size: (selectedFile.size / 1024).toFixed(1) + ' KB',
-                    type: selectedFile.type,
-                    userName: sessionEmail,
-                    userId: currentUser.uid,
-                    timestamp: serverTimestamp()
-                });
-                document.getElementById('clear-file-btn').click();
-            } catch (err) { showError("Upload Entry Failed: " + err.message); }
-            btn.disabled = false;
-            btn.innerHTML = `<i data-lucide="upload" class="w-5 h-5"></i> Push to Workspace Cloud`;
-            lucide.createIcons();
+            const btn = document.getElementById('upload-btn');
+            const progressContainer = document.getElementById('upload-progress-container');
+            const progressBar = document.getElementById('upload-progress-bar');
+            const percentText = document.getElementById('upload-percent');
+
+            btn.disabled = true;
+            progressContainer.classList.remove('hidden');
+
+            const storagePath = `artifacts/${appId}/public/uploads/${Date.now()}_${selectedFile.name}`;
+            const storageRef = ref(storage, storagePath);
+            const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+
+            uploadTask.on('state_changed', 
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    progressBar.style.width = progress + '%';
+                    percentText.textContent = Math.round(progress) + '%';
+                }, 
+                (error) => {
+                    showError("Storage Error: Enable Firebase Storage and Rules.");
+                    btn.disabled = false;
+                }, 
+                async () => {
+                    const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'files'), {
+                        name: selectedFile.name,
+                        size: (selectedFile.size / (1024 * 1024)).toFixed(2) + " MB",
+                        type: selectedFile.type,
+                        url: downloadURL,
+                        storagePath: storagePath,
+                        userName: sessionEmail,
+                        userId: currentUser.uid,
+                        timestamp: serverTimestamp()
+                    });
+                    document.getElementById('clear-file-btn').click();
+                    progressContainer.classList.add('hidden');
+                    btn.disabled = false;
+                }
+            );
         });
 
-        // Realtime Data Streams
-        function setupDataStreams() {
+        // Streams
+        function setupStreams() {
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'messages'), (snap) => {
-                const msgs = snap.docs.map(d => ({id: d.id, ...d.data()}))
-                    .sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-                currentMessagesData = msgs;
-                
+                const msgs = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
                 document.getElementById('messages-list').innerHTML = msgs.map(m => `
-                    <div class="bg-white p-6 rounded-[2rem] border border-slate-200 group relative hover:shadow-xl hover:shadow-blue-900/5 transition-all">
+                    <div class="bg-white p-6 rounded-[2rem] border border-slate-200 group relative">
                         <div class="flex items-center justify-between mb-3">
-                            <div class="flex items-center gap-2">
-                                <span class="text-[10px] font-black text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-widest">${m.userName}</span>
-                            </div>
-                            ${m.userId === currentUser.uid ? `<button onclick="window.delDoc('messages', '${m.id}')" class="text-slate-200 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                            <span class="text-[10px] font-black text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-widest">${m.userName}</span>
+                            ${m.userId === currentUser.uid ? `<button onclick="window.delDoc('messages', '${m.id}')" class="text-slate-200 hover:text-red-500 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
                         </div>
                         <p class="text-slate-700 leading-relaxed font-semibold text-lg">${m.text}</p>
                     </div>
@@ -564,35 +438,65 @@
             });
 
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'files'), (snap) => {
-                const fls = snap.docs.map(d => ({id: d.id, ...d.data()}))
-                    .sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-                
-                document.getElementById('files-list').innerHTML = fls.map(f => `
-                    <div class="bg-white p-5 rounded-[1.5rem] border border-slate-200 flex items-center justify-between group hover:border-blue-300 transition-all">
-                        <div class="flex items-center gap-5">
-                            <div class="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300 group-hover:bg-blue-50 group-hover:text-blue-600 transition-all border border-slate-100"><i data-lucide="file-text" class="w-7 h-7"></i></div>
+                const fls = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+                document.getElementById('files-list').innerHTML = fls.map(f => {
+                    const isPDF = f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf');
+                    // Google Drive Viewer Link for PDF
+                    const viewLink = isPDF ? `https://docs.google.com/viewer?url=${encodeURIComponent(f.url)}&embedded=true` : f.url;
+
+                    return `
+                    <div class="bg-white p-5 rounded-[1.5rem] border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4 group">
+                        <div class="flex gap-4 items-center">
+                            <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center ${isPDF ? 'text-red-500' : 'text-blue-500'}">
+                                <i data-lucide="${isPDF ? 'file-text' : 'file'}" class="w-6 h-6"></i>
+                            </div>
                             <div>
-                                <h4 class="font-black text-slate-900 text-lg leading-tight">${f.name}</h4>
-                                <div class="flex items-center gap-3 mt-1 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                                    <span class="text-blue-600">By ${f.userName.split('@')[0]}</span>
-                                    <span>&bull;</span>
-                                    <span>${f.size}</span>
-                                </div>
+                                <h4 class="font-black text-slate-800 text-sm truncate max-w-[150px]">${f.name}</h4>
+                                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">${f.size} &bull; BY ${f.userName.split('@')[0]}</p>
                             </div>
                         </div>
-                        ${f.userId === currentUser.uid ? `<button onclick="window.delDoc('files', '${f.id}')" class="p-2 text-slate-200 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-5 h-5"></i></button>` : ''}
-                    </div>
-                `).join('');
+                        <div class="flex items-center gap-2">
+                            <a href="${viewLink}" target="_blank" class="flex-1 md:flex-none flex items-center justify-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-600 hover:text-white transition-all">
+                                <i data-lucide="eye" class="w-3.5 h-3.5"></i> Read
+                            </a>
+                            <a href="${f.url}" download="${f.name}" target="_blank" class="flex-1 md:flex-none flex items-center justify-center gap-2 bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-900 hover:text-white transition-all">
+                                <i data-lucide="download" class="w-3.5 h-3.5"></i> Download
+                            </a>
+                            ${f.userId === currentUser.uid ? `
+                                <button onclick="window.delDoc('files', '${f.id}', '${f.storagePath}')" class="p-2 text-slate-200 hover:text-red-500 transition-all">
+                                    <i data-lucide="trash-2" class="w-5 h-5"></i>
+                                </button>` : ''}
+                        </div>
+                    </div>`;
+                }).join('');
                 lucide.createIcons();
             });
         }
 
-        window.delDoc = (col, id) => {
-            if (confirm("Delete this entry?")) {
-                deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', col, id));
+        window.delDoc = async (col, id, storagePath) => {
+            if (confirm("Permanently delete this?")) {
+                try {
+                    if (col === 'files' && storagePath) {
+                        const fileRef = ref(storage, storagePath);
+                        await deleteObject(fileRef).catch(console.error);
+                    }
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', col, id));
+                } catch { showError("Delete failed."); }
             }
         };
 
+        // Post Message Logic
+        document.getElementById('msg-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('msg-input');
+            if (!input.value.trim() || !currentUser) return;
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'messages'), {
+                    text: input.value.trim(), userName: sessionEmail, userId: currentUser.uid, timestamp: serverTimestamp()
+                });
+                input.value = '';
+            } catch { showError("Feed Error."); }
+        });
     </script>
 </body>
 </html>
